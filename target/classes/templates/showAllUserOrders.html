@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>My Account</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<nav class="navbar navbar-light navbar-expand-lg bg-dark fixed-top text-white" style="height:5em">
+    <a th:href="@{/app}" class="navbar-brand">
+        <img th:src="@{/images/logo.png}" alt="logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#my-nav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" style="font-size: 20px" id="my-nav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app}" th:text="#{title}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/order/account}" th:text="#{myAcc}">My Account</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/user}" th:text="#{users}">Users</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/car}" th:text="#{cars}">Cars</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/order}" th:text="#{orders}">Orders</a>
+            </li>
+        </ul>
+        <a class="nav-link text-white" th:href="@{'?locale=en'}">EN</a>
+        <a class="nav-link text-white" th:href="@{'?locale=uk'}">UKR</a>
+        <a th:href="@{/app/registration}" class="btn btn-primary mr-2 ml-2" th:text="#{signUp}">Sign Up</a>
+        <a th:href="@{/app/login}" class="btn btn-primary mr-2 ml-2" th:text="#{signIn}">Sign In</a>
+    </div>
+</nav>
+<div class="container" style="max-width: 1300px; margin-top: 6.5em">
+    <h1>My Orders</h1>
+    <div class="row">
+        <div th:each="order : ${formedOrderList}" class="col-sm-6 mt-4">
+            <div class="card pr-2 pl-2" style="height: 100%; border:2px solid #777">
+                <div class="card-body d-flex flex-column justify-content-around" th:if="${order != null}">
+                    <h5 class="card-title" th:text="'Rental Order - '+ ${order.getStatusName()}">cardTitle</h5>
+                    <h5 class="card-subtitle mb-2 text-muted" th:text="${order.getCarName()}">cardSubtitle</h5>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <img th:src="@{${order.getImagePath()}}" style="width:100%; height:200px"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Info</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Driver services</td>
+                                    <td th:text="${order.isDriverFlag()}">carName</td>
+                                </tr>
+                                <tr>
+                                    <td>Rental term, days</td>
+                                    <td th:text="${order.getTerm()}">term</td>
+                                </tr>
+                                <tr>
+                                    <td>Total price, UAH</td>
+                                    <td th:text="${order.getTotal()}">totalPrice</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row ml-4 justify-content-end" style="font-size: 22px">
+                                <a th:if="${order.getStatusName() == 'CONFIRMED'}" class="btn btn-success mr-3"
+                                   th:href="@{'/app/order/' + ${order.getRentalOrderId()} + '/pay'}">Pay</a>
+                                <a th:if="${order.getStatusName() == 'PAID'}" class="btn btn-success mr-3"
+                                   th:href="@{'/app/order/' + ${order.getRentalOrderId()} + '/return'}">Return car</a>
+                                <p th:if="${order.getStatusName() == 'USED_NEED_REPAIR'}" style="color: red"
+                                   th:text="'You have broken the car and should pay ' + ${order.getRepairPrice()} +
+                                   ' UAH for repair'">repair message</p>
+                                <a th:if="${order.getStatusName() == 'USED_NEED_REPAIR'}" class="btn btn-warning mr-3"
+                                   th:href="@{'/app/order/' + ${order.getRentalOrderId()} + '/return'}">Pay and return</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${order.getStatusName() == 'REJECTED'}" style="color: red">
+                        <h5>Reason of rejection</h5>
+                        <p th:text="${order.getRejectMessageText()}">reason</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-info mt-4 mr-2 mb-4" th:href="@{/app}">Cancel</a>
+</div>
+
+</body>
+</html>

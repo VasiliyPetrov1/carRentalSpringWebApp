@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Edit User</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>User editor</h1>
+    <p th:text="${updateUserMessage}">message</p>
+    <form th:method="post" th:action="@{/app/user/{id}/edit(id=${userDto.getId()})}" th:object="${userDto}">
+        <input type="hidden" th:field="*{id}">
+        <label th:for="usernameId">Usermame:</label>
+        <input type="text" th:field="*{username}" id="usernameId">
+        <label th:for="emailId">Email:</label>
+        <input type="text" th:field="*{email}" id="emailId">
+        <div>
+            <label th:for="userId">USER</label>
+            <input type="checkbox" th:field="*{user}" th:name="user"
+                   th:id="userId">
+            <label th:for="adminId">ADMIN</label>
+            <input type="checkbox" th:field="*{admin}" th:name="admin"
+                   th:id="adminId">
+            <label th:for="managerId">MANAGER</label>
+            <input type="checkbox" th:field="*{manager}" th:name="manager"
+                   th:id="managerId">
+        </div>
+        <input type="submit" value="Save">
+    </form>
+    <form th:method="get" th:action="@{/app/user}">
+        <input type="submit" value="Cancel">
+    </form>
+</body>
+</html>

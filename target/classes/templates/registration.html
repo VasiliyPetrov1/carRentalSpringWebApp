@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New user</title>=
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container mt-4" style="width: 20em; border: 2px solid #999; border-radius: 5px">
+    <form th:method="post" th:action="@{/app/registration}" th:object="${userRegDto}" class="form-group">
+        <div>
+            <p th:text="${addUserMessage}" th:class="cRed"></p>
+        </div>
+        <label for="username" th:text="#{enterName}">Enter name: </label>
+        <input type="text" th:field="*{username}" class="form-control" id="username">
+        <br/>
+        <label for="email" th:text="#{enterEmail}">Enter email: </label>
+        <input type="text" th:field="*{email}" class="form-control" id="email">
+        <br/>
+        <label for="password" th:text="#{enterPass}">Enter password: </label>
+        <input type="text" th:field="*{password}" class="form-control" id="password">
+        <br/>
+        <input type="submit" th:value="#{registerAct}" class="btn btn-info">
+    </form>
+</div>
+<br/>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<nav class="navbar navbar-light navbar-expand-lg bg-dark fixed-top text-white" style="height:5em">
+    <a th:href="@{/app}" class="navbar-brand">
+        <img th:src="@{/images/logo.png}" alt="logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#my-nav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" style="font-size: 20px" id="my-nav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app}" th:text="#{title}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/order/account}" th:text="#{myAcc}">My Account</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/user}" th:text="#{users}">Users</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/car}" th:text="#{cars}">Cars</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link text-white" th:href="@{/app/order}" th:text="#{orders}">Orders</a>
+            </li>
+        </ul>
+        <a class="nav-link text-white" th:href="@{'?locale=en'}">EN</a>
+        <a class="nav-link text-white" th:href="@{'?locale=uk'}">UKR</a>
+        <a th:href="@{/app/registration}" class="btn btn-primary mr-2 ml-2" th:text="#{signUp}">Sign Up</a>
+        <a th:href="@{/app/login}" class="btn btn-primary mr-2 ml-2" th:text="#{signIn}">Sign In</a>
+    </div>
+</nav>
+<div class="container" style="width: 1300px; margin-top: 6.5em">
+<form th:method="post" th:action="@{/app/user}">
+    <p>Find user by name</p>
+    <input type="text" th:name="nameFilter" id="nameFilter" placeholder="Enter user name"/>
+    <input type="submit" value="find">
+</form>
+<form th:method="get" th:action="@{/app/user}">
+    <input type="submit" value="Show all users">
+</form>
+<form th:method="get" th:action="@{/app/user/new}">
+    <input type="submit" value="Create new user">
+</form>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody th:each="user : ${users}">
+            <tr>
+            </tr>
+            <tr th:if="${user != null}">
+                <td th:text="${user.getUsername()}"></td>
+                <td th:text="${user.getEmail()}"></td>
+                <td th:each="role : ${user.getRoles()}">
+                    <span th:text="${role.name()}"></span>
+                </td>
+                <td><a th:href="@{/app/user/{id}(id=${user.getId()})}">Edit</a></td>
+                <td>
+                    <form th:method="get" th:action="@{/app/user/{id}/delete(id=${user.getId()})}">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<a th:href="@{/app}" class="btn btn-info">Cancel</a>
+</div>
+</body>
+</html>

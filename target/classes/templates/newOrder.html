@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Editor</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container mt-4" style="width: 60em; border: 2px solid #999; border-radius: 5px">
+    <h1 th:text="#{orderCarBut}">Order Car</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th th:text="#{parameter}">Parameter</th>
+                        <th th:text="#{info}">Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="#{carNameLabel}">Car Name</td>
+                        <td th:text="${orderDetailsDto.getCarName()}">carName</td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{brandLabel}">Brand</td>
+                        <td th:text="${orderDetailsDto.getBrandName()}">brandName</td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{rentalPriceLabel}">Rental Price, UAH</td>
+                        <td th:text="${orderDetailsDto.getRentalPrice()}">rentalPrice</td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{repairPriceLabel}">Repair Price, UAH</td>
+                        <td th:text="${orderDetailsDto.getRepairPrice()}">repairPrice</td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{mileageLabel}">Mileage, km</td>
+                        <td th:text="${orderDetailsDto.getMileage()}">mileage</td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{qualClassLabel}">Quality class</td>
+                        <td th:text="${orderDetailsDto.getQualClassName()}">mileage</td>
+                    </tr>
+                </tbody>
+            </table>
+            <img th:src="@{${orderDetailsDto.getImagePath()}}" style="width: 450px; margin-top: 1em; margin-bottom: 1em"/>
+        </div>
+        <div class="col-sm-6">
+            <form th:method="post", th:action="@{/app/order}"
+                  th:object="${orderDetailsDto}" class="form-group" style="display: flex;
+                  flex-direction: column; justify-content: space-between; height: 90%">
+                <input type="hidden" th:field="*{carId}">
+                <input type="hidden" th:field="*{userId}">
+                <input type="hidden" th:field="*{carName}">
+                <input type="hidden" th:field="*{brandName}">
+                <input type="hidden" th:field="*{rentalPrice}">
+                <input type="hidden" th:field="*{repairPrice}">
+                <input type="hidden" th:field="*{mileage}">
+                <input type="hidden" th:field="*{qualClassName}">
+                <input type="hidden" th:field="*{imageFileName}">
+                <input type="hidden" th:field="*{userId}">
+                <h3 th:text="#{fullfPaspData}">Fulfill the passport data</h3>
+                <div>
+                    <label for="nameId" th:text="#{nameLabel}">Name:</label>
+                    <input type="text" th:field="*{passportName}" class="form-control" id="nameId">
+                </div>
+                <div>
+                    <label for="surnameId" th:text="#{surnameLabel}">Surname:</label>
+                    <input type="text" th:field="*{surname}" class="form-control" id="surnameId">
+                </div>
+                <div>
+                    <label for="patronicalId" th:text="#{patrNameLabel}">Patronical Name:</label>
+                    <input type="text" th:field="*{patronicalName}" class="form-control" id="patronicalId">
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm">
+                        <label for="paspNumId" th:text="#{paspNumLabel}">Passport Number:</label>
+                        <input type="text" th:field="*{passportNumber}" class="form-control" id="paspNumId">
+                    </div>
+                    <div class="col-sm">
+                        <label for="rntrcId" th:text="#{rntrcLabel}">RNTRC:</label>
+                        <input type="text" th:field="*{RNTRC}" class="form-control" id="rntrcId">
+                    </div>
+                </div>
+                <h3 th:text="#{fullfOrdFeat}">Fulfill order features</h3>
+                <div th:if="${orderDetailsDto.getTerm() != null}">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
+                            <th th:text="#{driverServLabel}">Driver services</th>
+                            <th th:text="#{totPriceLabel}">Total price, UAH</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td th:text="${orderDetailsDto.isDriverFlag()}">driverFlag</td>
+                                <td th:text="${orderDetailsDto.getTerm()} * ${orderDetailsDto.getRentalPrice()}">totalPrice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm" style="display:flex; flex-direction: column; justify-content: space-around;
+                     align-items: center;">
+                        <label for="termId" th:text="#{rentTermLabel}">Rental term, days:</label>
+                        <input type="text" th:field="*{term}" class="form-control" id="termId">
+                    </div>
+                    <div class="col-sm mr-3" style="display:flex; flex-direction: column; justify-content: space-around;
+                     align-items: center; border: 1px solid #999; border-radius: 3px">
+                        <label th:text="#{driverAn} + *{driverDailySalary} + #{perDay}" for="driverId" style="text-align:center">
+                            I need driver
+                        </label>
+                        <input type="checkbox" th:field="*{driverFlag}" id="driverId" style="height: 30px; width: 30px">
+                    </div>
+                </div>
+                <div class="form-group row mb-2 mt-2 mr-1 justify-content-end">
+                    <input type="submit" th:value="#{confOrder}" class="btn btn-success ml-2 mr-1">
+                    <a th:href="@{/app}" class="btn btn-info ml-1 mr-1" th:text="#{cancel}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

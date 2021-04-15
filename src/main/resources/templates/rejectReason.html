@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reject Reason</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container mt-5" style="max-width: 700px; border: 2px solid #999; border-radius: 5px">
+        <h1>Reject order</h1>
+        <h3>Give reason to client</h3>
+        <br/>
+        <form th:method="post" th:action="@{/app/order/{id}/reject(id=${orderId})}" class="form-group">
+            <textarea class="form-control" rows="8" name="rejectMessageText"></textarea>
+            <div class="form-group row justify-content-end mt-2 mr-1">
+                <a th:href="@{/app/order}" class="btn btn-info mr-1 ml-1">Cancel</a>
+                <input type="submit" value="Reject" class="btn btn-warning mr-1 ml-1">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

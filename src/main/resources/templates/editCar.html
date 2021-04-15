@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Editor</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container mt-4" style="width: 38em; border: 2px solid #999; border-radius: 5px">
+    <h1>Car Editor</h1>
+    <p th:text="${updateCarMessage}">message</p>
+    <form th:method="post", th:action="@{/app/car/{id}/edit(id=${carDto.getId()})}"
+          th:object="${carDto}" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group row">
+            <div class="col-sm">
+                <label for="nameId">Name:</label>
+                <input type="text" th:field="*{name}" class="form-control" id="nameId">
+            </div>
+            <div class="col-sm">
+                <label for="modelId">Brand:</label>
+                <input type="text" th:field="*{brandName}" class="form-control" id="modelId">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm">
+                <label for="rentalId">Rental price:</label>
+                <input type="text" th:field="*{rentalPrice}" class="form-control" id="rentalId">
+            </div>
+            <div class="col-sm">
+                <label for="repairId">Repair price:</label>
+                <input type="text" th:field="*{repairPrice}" class="form-control" id="repairId">
+            </div>
+            <div class="col-sm">
+                <label for="mileageId">Mileage:</label>
+                <input type="text" th:field="*{mileage}" class="form-control" id="mileageId">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-3 ml-3 mr-1" style="display:flex; flex-direction: column; justify-content: space-around; align-items: center;
+            border: 1px solid #999; border-radius: 3px">
+                <label for="usageId">IS IN USAGE</label>
+                <input type="checkbox" th:field="*{inUsage}" id="usageId">
+            </div>
+            <div class="col-sm mr-3 ml-1" style="display:flex; flex-direction: row; justify-content: space-between; align-items: center;
+            border: 1px solid #999; border-radius: 3px">
+                <span>QUALITY CLASS:</span>
+                <div>
+                    <label for="economId" style="margin: 0px">ECONOM</label>
+                    <input type="checkbox" th:field="*{econom}" id="economId">
+                </div>
+                <div>
+                    <label for="premiumId" style="margin: 0px">PREMIUM</label>
+                    <input type="checkbox" th:field="*{premium}" id="premiumId">
+                </div>
+                <div>
+                    <label for="luxuryId" style="margin: 0px">LUXURY</label>
+                    <input type="checkbox" th:field="*{luxury}" id="luxuryId">
+                </div>
+            </div>
+        </div>
+        <br/>
+        <img th:src="@{${carDto.getImagePath()}}" style="width:350px"/>
+        </br>
+        <div class="form-group row mb-2 mt-2">
+            <div class="col-sm-8 mr-1">
+                <input type="file" name="image" accept="image/png, image/jpeg" class="form-control-file" id="imageId">
+            </div>
+            <div class = "col-sm ml-1" style="display: flex; flex-direction: row;
+             justify-content: space-between; align-items: end">
+                <input type="submit" value="Save" class="btn btn-success">
+                <a th:href="@{/app/car}" class="btn btn-info">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

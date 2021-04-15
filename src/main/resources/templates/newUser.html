@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New User</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h1>User Creation Page</h1>
+<p th:text="${createUserMessage}">message</p>
+<form th:method="post" th:action="@{/app/user/new}" th:object="${userCreateDto}">
+    <label for="usernameId">Username:</label>
+    <input type="text" th:field="*{username}" id="usernameId">
+    <label for="emailId">Email:</label>
+    <input type="text" th:field="*{email}" id="emailId">
+    <label for="passwordId">Password:</label>
+    <input type="text" th:field="*{password}" id="passwordId">
+    <div>
+        <label th:for="userId">USER</label>
+        <input type="checkbox" th:field="*{user}" th:name="user"
+               th:id="userId">
+        <label th:for="adminId">ADMIN</label>
+        <input type="checkbox" th:field="*{admin}" th:name="admin"
+               th:id="adminId">
+        <label th:for="managerId">MANAGER</label>
+        <input type="checkbox" th:field="*{manager}" th:name="manager"
+               th:id="managerId">
+    </div>
+    <input type="submit" value="Save">
+</form>
+<form th:method="get" th:action="@{/app/user}">
+    <input type="submit" value="Cancel">
+</form>
+</body>
+</html>
